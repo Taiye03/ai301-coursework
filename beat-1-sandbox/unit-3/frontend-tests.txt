@@ -1,0 +1,15 @@
+
+> pathreview-frontend@0.1.0 test
+> vitest --run
+
+
+ RUN  v1.6.1 /Users/taiyeolomu/pathreview-ai301-fa26-s3/frontend
+
+ ✓ src/components/__tests__/ReviewSection.test.tsx  (10 tests) 121ms
+ ✓ src/components/__tests__/ProfileForm.test.tsx  (8 tests) 977ms
+
+ Test Files  2 passed (2)
+      Tests  18 passed (18)
+   Start at  23:11:36
+   Duration  1.36s (transform 48ms, setup 143ms, collect 100ms, tests 1.10s, environment 303ms, prepare 55ms)
+
