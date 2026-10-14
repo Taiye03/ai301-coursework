@@ -14,16 +14,10 @@ label is not graded.
 ## Your pull request
 
 **Pull request**
-
-[Link to the pull request you opened. It must be the pull request's own page on the Path
-Review repo, not your fork's branch page.]
+https://github.com/codepath/pathreview-ai301-fa26-s3/pull/222
 
 **Branch**
-
-[The name of the branch the pull request comes from, exactly as it appears in your fork.
-The naming shape is a type prefix, then the issue number, then a short description. **The
-issue number in the branch name must be the number of the issue the pull request fixes** —
-a name carrying any other number does not satisfy this field.]
+fix/61-health-probe-text
 
 ## Eval iterations
 
@@ -31,29 +25,21 @@ Answer all four sections. Quote source text directly; paraphrase does not satisf
 fields.
 
 **Run history**
-
-[The agreement score of each run you did, in order. A single run is a complete answer if
-only one run occurred. **The last score in your list must match the agreement line in the
-`eval-run.txt` you committed** — that file is the record of your final run.]
+20/20, 20/20
 
 **Package analysis**
 
-[Pick one scored package (`pkg-01` through `pkg-20` — the four `calib-` packages are never
-scored). Name it by id, say what your rubric decided and what the gold label said, and
-explain why your rubric read it that way.]
+pkg-03 — My rubric decided `reject`, and the gold label was `reject`. This package was categorized as `silent-drift`. The rubric rejected it because the Plan fidelity check requires the branch diff to stay within the plan's stated scope or have deviations honestly recorded. Material unrecorded drift therefore fails the check and makes the PR not ready to submit.
 
 **Check rationale**
 
-[Quote one check from the `rubric.md` you uploaded to `tools/pr-precheck/`, exactly as it reads now.
-Then say why it reads that way — what you revised to get there, or what you rejected in
-favour of it.]
+"Plan fidelity | The branch diff from `git diff main...HEAD` read against the scope, implementation steps, and any `## Deviations` recorded in `plan.md`; also compare factual implementation claims in the PR description with the diff. | Pass when the diff implements work within the plan's stated scope or honestly recorded deviations, and the PR description does not materially misrepresent what the diff actually changes. Fail when the diff contains material unrecorded drift, omits planned work without disclosure, or the description claims implementation fidelity contradicted by the diff. | required"
+
+I made this check explicit so implementation changes are judged against both the original plan and recorded deviations rather than requiring exact adherence to the original plan. This allows legitimate changes when they are disclosed while still rejecting silent scope drift.
 
 **Trade-offs**
 
-[Every check gives something up. Any one of these is a complete answer: a package whose
-result it changes, a canary you re-ran with `--only`, a case you accept it will miss, or a
-stated reason nothing changed elsewhere. "Nothing changed, and here is how I know" earns
-the point in full when the reason follows.]
+This check gives up strict plan adherence in favor of allowing honestly documented deviations. A PR can still pass Plan fidelity when its implementation differs from the original plan, as long as the deviation is recorded and the PR description truthfully represents the resulting change. The final eval still scored 20/20, including all four `silent-drift` packages, so this trade-off did not cause those cases to be incorrectly accepted.
 
 ---
 
