@@ -1,4 +1,4 @@
-# Contribution: [Issue Title]
+# Contribution: Add Markdown and HTML Summary Exporters
 
 Path: `beat-2-contribution/contribution-story.md`
 
@@ -7,12 +7,12 @@ the repository is not read. **Keep every section header below under its exact na
 format criteria grade exactly that. Your course repo link is the whole submission: no tool
 files and no evidence uploads are part of Assignment 5.
 
+
 **Contribution Number:** [1]
-**Student:** [Student name]
-**GitHub Username:** [your GitHub username, exactly as it appears on your profile - no @, no
-profile URL. Your comments upstream are identified by this name.]
-**Issue:** [GitHub issue link]
-**Pull Request:** [GitHub PR link, once opened]
+**Student:** Taiye Olomu
+**GitHub Username:** Taiye03
+**Issue:** https://github.com/Zwony/ecotrace/issues/183
+**Pull Request:** Not opened yet
 
 One repository, built across units 5 to 8, telling the whole story of your real
 contribution. Fill it as you work, not at the end — the sections below ask for evidence that
@@ -79,24 +79,19 @@ drafted, what you did with the draft.]
 
 ## Why I Chose This Issue
 
-[1-2 paragraphs in your own words: how you searched, what your scan
-surfaced, what your scout's verdict said, why this issue fits your
-profile, and what you hope to learn. If your scout's verdict on it
-was reject and you chose it anyway, say so here and say why; choosing
-against your own tool silently is what loses points. Close with an
-honest read of the tool itself: where the scout fell short on a real
-wild search and what you changed or would change, or what convinced
-you it held up. **Record the link to your claim comment in this section too.**
-Not claimed yet? Write `claim pending` and today's date where the link goes,
-and add the link the moment your claim lands.]
+I found EcoTrace issue #183 while using my issue-scout tool to search for open-source contributions that matched my experience with Python and my interest in software engineering. My initial scan returned 199 unique issues, but all five top-ranked candidates came from the same newly created repository. After refining my search strategy and grading additional issues, I considered EcoTrace alongside several other projects. My scout gave EcoTrace #183 an accept verdict with moderate difficulty. I chose it because implementing Markdown and HTML summaries would allow me to work with an unfamiliar Python codebase, understand existing functionality, and practice writing tests while contributing a useful feature.
+
+Before claiming the issue, I investigated whether EcoTrace was actively maintained or whether its recent activity was mainly related to Hacktoberfest. I found that the maintainer had been developing the project before October, although external contributions increased during Hacktoberfest. I also inspected core.py and noticed that get_summary() did not include total energy in kWh, even though the class tracks that value. This gave me a specific technical question to raise with the maintainer, who later confirmed that adding the energy field to the summary was the preferred approach. The issue-scout helped me narrow down my options, but its initial ranking showed me that recent updates and low comment counts were not enough to evaluate a repository. I would improve it further by incorporating longer-term maintenance activity and contributor response patterns.
+
+Claim comment: https://github.com/Zwony/ecotrace/issues/183#issuecomment-6584948907
 
 **Toolkit**
 
-- Tool: issue-scout (your scout: your search strategy, your rubric),
-  and how you used it
-- What it produced: [the scan and its verdict on this issue, described]
-- Difficulties: [where it fell short, or "none met" if none did]
-- What changed: [what you patched or would update, or "nothing"]
+* Tool: issue-scout, using my customized fit profile, search strategy, and grading rubric.
+* What it produced: An initial scan of 199 unique issues and a shortlist of candidates. EcoTrace #183 received an accept verdict with moderate difficulty after further evaluation.
+* Difficulties: My initial ranking concentrated the top five results in one newly created repository. The scout also did not fully distinguish sustained maintenance activity from temporary increases in contributions.
+* What changed: I prioritized issues at least seven days old, limited the top five results to two per repository, added maintainer responsiveness as a preferred check, and patched the rubric to assess scope feasibility. I also investigated EcoTrace’s maintenance history before claiming the issue.
+
 
 ---
 
@@ -104,26 +99,28 @@ and add the link the moment your claim lands.]
 
 **Problem Description**
 
-[In your own words, what is broken or missing?]
+EcoTrace tracks energy consumption and carbon emissions, but it does not currently provide the Markdown and HTML summary exporters requested in issue #183. This makes it harder for users to include readable summaries in documentation, reports, or web pages without formatting the data themselves.
 
 **Expected Behavior**
 
-[What should happen?]
+Users should be able to generate a Markdown table or a self-contained HTML summary card using to_markdown() and to_html(). Both formats should include total energy consumption in kWh, tracking duration, and CO₂ emissions. The exporters should also handle missing or zero values without crashing.
 
 **Current Behavior**
 
-[What actually happens?]
+From my initial inspection of the repository, I found that get_summary() in ecotrace/core.py returns information such as tracking duration and total carbon emissions but does not include total_energy_kwh. However, the class already tracks energy consumption using self.total_energy_kwh. The requested Markdown and HTML exporters are not yet implemented. I have confirmed these observations through source inspection but have not yet reproduced the missing functionality in a local environment.
 
 **Affected Components**
 
-[Which parts of the codebase are involved?]
+* ecotrace/core.py: Contains get_summary() and the tracked energy-consumption value. The maintainer confirmed that adding total_energy_kwh to the summary dictionary is an acceptable, backward-compatible approach.
+* Export functionality: The new to_markdown() and to_html() methods need to be implemented in a location consistent with the project’s existing architecture. I will confirm the appropriate placement during local investigation.
+* tests/test_exporters.py: The issue requests tests covering both exporters, including missing and zero values. The maintainer also requested tests for the updated summary.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+* Tool: GitHub repository inspection and issue-scout. I used them to review the issue requirements, examine the existing implementation, and identify a design question for the maintainer.
+* What it produced: I identified the missing energy field in get_summary() and confirmed that the class already tracks total energy consumption. I also received maintainer guidance approving the summary change.
+* Difficulties: The issue describes the expected output but does not fully specify where the new exporters should be implemented. I have not yet validated the behavior locally.
+* What changed: I asked the maintainer about adding total_energy_kwh to get_summary() and incorporated their response into my proposed approach. I will confirm the exporters’ placement when I inspect the local codebase.
 
 ---
 
