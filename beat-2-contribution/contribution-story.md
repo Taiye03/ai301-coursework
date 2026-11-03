@@ -59,11 +59,9 @@ Unit 5: Building and refining an issue-scout for open-source contributions
 
 I configured an issue-scout skill with a personalized fit profile, GitHub search queries, ranking rules, and a six-check rubric to discover and evaluate open-source issues. My initial scan returned 199 unique issues, but all five top-ranked candidates came from the same newly created repository because my ranking favored issues with few comments and recent updates. To improve the results, I prioritized issues at least seven days old, limited the top five to two issues per repository, and added maintainer responsiveness as a preferred rubric check to distinguish active repositories from those that engage with outside contributors. I documented these changes in scan-notes.md and graded additional issues individually, but I have not rerun the full scan to verify whether the revised ranking produces more diverse results.
 
-**Unit 6: [one line on the tool work]**
+**Unit 6: Using Voice Guard and repository memory to prepare a responsible open-source contribution**
 
-[2-4 sentences: the voice-guard, the repo-memory file. What broke or
-fell short, and what changed because of it. "Nothing broke" counts when
-it is true - say how you know.]
+I configured Voice Guard to check my GitHub communication against rules for issue claims, questions, and follow-up messages, and used it to review my claim before posting. When I tested a follow-up acknowledgment, the guard applied its initial-claim requirements to the reply and rejected the draft, revealing a limitation in how it distinguishes message types; I left that draft unposted rather than changing the rules without further testing. I also created a local CLAUDE.local.md for EcoTrace using its contribution guidelines and a scoped Claude Code investigation, which identified the relevant summary and exporter components without modifying the repository. I removed the template scaffolding and excluded the memory file through .git/info/exclude, keeping my personal notes out of the upstream pull request.
 
 **Unit 7: [one line on the tool work]**
 
