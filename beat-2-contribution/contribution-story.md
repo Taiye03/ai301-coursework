@@ -126,31 +126,39 @@ From my initial inspection of the repository, I found that get_summary() in ecot
 
 **Environment Setup**
 
-[What a stranger would need to stand this up: your operating system,
-the relevant versions (language, runtime, package manager, the project
-itself), and how you set the project up. Then the challenges you faced
-and how you solved them, or that none came up.]
+I reproduced the missing functionality in EcoTrace issue #183 using my MacBook Air running macOS on Apple Silicon, Python 3.14.6, and EcoTrace 1.8.0 at baseline commit 05d9a12.
+
+I cloned my fork of the repository, created a Python virtual environment, activated it, and installed EcoTrace in editable mode using python -m pip install -e ".[dev]".
+
+During setup, pip warned that EcoTrace 1.8.0 does not provide a dev extra. I checked the project configuration and confirmed that its optional extras are gpu, ai, and web. To continue, I installed pytest 9.2.0 and flake8 7.5.0 separately.
+
+Before investigating the requested functionality, I ran the existing test suite. The results were 251 passed and 2 skipped, with no failures. I also ran flake8 ecotrace/, which reported multiple pre-existing style violations. Because these issues were unrelated to the requested exporters, I documented them rather than modifying unrelated source files.
+
+I completed the reproduction investigation without changing any EcoTrace source code.
 
 **Steps to Reproduce**
 
-1. [Step 1]
-2. [Step 2]
-3. [Observed result]
+1. Inspect the existing exporters. From the EcoTrace repository root at commit 05d9a12, I ran ls -la ecotrace/exporters/. The directory contained __init__.py, _retry_queue.py, cloud.py, otel.py, and webhook.py. No dedicated Markdown or HTML summary exporter module was present.
+2. Search for the requested functions. I ran grep -RnE 'def (to_markdown|to_html)\(' ecotrace/. The command returned no matches, confirming that no functions with those names were defined in the searched source directory.
+3. Verify the missing exporters at runtime. I imported ecotrace.exporters and checked whether it exposed to_markdown and to_html using Python’s hasattr(). Both checks returned False, confirming that neither function was available through the exporter package.
+4. Inspect the session summary. I ran sed -n '539,615p' ecotrace/core.py to examine EcoTrace.get_summary(). The returned dictionary included session duration, carbon emissions, and other metadata, but did not include total_energy_kwh.
+5. Confirm that energy is tracked internally. I ran grep -Rn 'self.total_energy_kwh' ecotrace/core.py. The output showed that the value is initialized at line 115 and accumulated at line 414. This confirmed that EcoTrace already maintains an internal energy-consumption value, even though get_summary() does not expose it.
+
+Observed result: The requested Markdown and HTML summary exporters are not available at the baseline commit. Additionally, get_summary() omits the internally tracked total-energy metric needed for the requested summaries. This confirms that the requested feature has not yet been implemented; it does not indicate a regression in existing functionality.
 
 **Reproduction Evidence**
 
-- **Commit showing reproduction:** [link to commit in your fork]
-- **Screenshots/logs:** [if applicable]
-- **My findings:** [what you discovered during reproduction; an
-  honest, evidenced cannot-reproduce that led you to re-pick or ask
-  the maintainer belongs here and costs you nothing]
+* Commit showing reproduction: None. This is a feature request, and I confirmed the missing functionality through source inspection and runtime checks without modifying EcoTrace’s source code or creating a reproduction commit. The investigation was performed against baseline commit 05d9a12.
+* Screenshots/logs: I collected terminal output showing that neither to_markdown nor to_html is exposed through ecotrace.exporters (False for both runtime checks). Searching the source directory found no function definitions with those names. The baseline test suite completed with 251 passed and 2 skipped. Flake8 reported existing style violations unrelated to this issue.
+* My findings: The requested Markdown and HTML summary exporters have not yet been implemented. I also discovered that EcoTrace.get_summary() omits total_energy_kwh, even though the class initializes and updates that value internally. The maintainer confirmed that adding this field to the summary dictionary is acceptable, provided backward compatibility is maintained. This investigation established the missing functionality and identified the relevant code areas for implementation and testing.
+
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+* Tool: Claude Code’s repro-check skill, GitHub repository inspection, Python, pytest, and flake8.
+* What it produced: I created a reproduction report documenting my environment, baseline tests, source-code inspection, runtime checks, and findings for EcoTrace issue #183. I then used repro-check to evaluate my claim draft and reproduction report. The grader returned an accept verdict, with all five checks passing: environment, reproducible steps, behavior match, honest outcome, and repository conventions.
+* Difficulties: The project’s documented development installation command referenced a dev extra that was not defined in its configuration. I installed pytest and flake8 separately. The baseline linting command also reported existing style violations. Another challenge was distinguishing a missing feature from a regression, since the issue requests functionality that has not yet been implemented.
+* What changed: I moved from understanding the issue requirements to verifying the repository’s actual behavior. I confirmed that the requested exporters were unavailable and identified the missing total_energy_kwh field in get_summary(). The reproduction investigation helped me understand which parts of the codebase need attention before implementation.
 
 ---
 
