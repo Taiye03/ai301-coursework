@@ -1,61 +1,14 @@
 # Contribution: Add Markdown and HTML Summary Exporters
 
-Path: `beat-2-contribution/contribution-story.md`
-
-This file is Assignment 5, and it is graded at the path above; a copy kept anywhere else in
-the repository is not read. **Keep every section header below under its exact name** — the
-format criteria grade exactly that. Your course repo link is the whole submission: no tool
-files and no evidence uploads are part of Assignment 5.
-
-
 **Contribution Number:** [1]
 **Student:** Taiye Olomu
 **GitHub Username:** Taiye03
 **Issue:** https://github.com/Zwony/ecotrace/issues/183
-**Pull Request:** Not opened yet
-
-One repository, built across units 5 to 8, telling the whole story of your real
-contribution. Fill it as you work, not at the end — the sections below ask for evidence that
-is far easier to write down as it happens than to reconstruct in the last weekend.
-
-Contribution Number stays `[1]` unless you make more than one contribution this term; it
-just numbers them.
-
----
+**Pull Request:** https://github.com/Zwony/ecotrace/pull/252
 
 ## Toolkit
 
-Every story section below, from Why I Chose This Issue through Pull
-Request, ends with a Toolkit block: which tool did that phase's work
-and how you used it, what it produced, what difficulties or
-shortcomings it presented, and what you changed or would change
-because of them. Together the blocks are the thread the rubric's
-Toolkit points read, and they are the raw material for your unit-9
-portfolio, so keep them current as you work rather than
-reconstructing them later.
-
-A Toolkit block looks like this (copy it into each story section and
-fill it there):
-
-```text
-**Toolkit**
-
-- Tool: [which tool did this phase's work, and how you used it]
-- What it produced: [described in a sentence or a short excerpt]
-- Difficulties: [what fought you or fell short, or "none met"]
-- What changed: [the patch, revision, or workaround, what you would
-  update, or "nothing"]
-```
-
-This section also keeps one short dated entry per week of tool work,
-starting below: what you built or changed that week, what broke, and
-what you changed because of it. The blocks tell the story where it
-happened; these entries are the toolkit's own timeline.
-
-All four entries are graded. Keep every heading below, and fill each
-one in the week it belongs to.
-
-Unit 5: Building and refining an issue-scout for open-source contributions
+**Unit 5: Building and refining an issue-scout for open-source contributions**
 
 I configured an issue-scout skill with a personalized fit profile, GitHub search queries, ranking rules, and a six-check rubric to discover and evaluate open-source issues. My initial scan returned 199 unique issues, but all five top-ranked candidates came from the same newly created repository because my ranking favored issues with few comments and recent updates. To improve the results, I prioritized issues at least seven days old, limited the top five to two issues per repository, and added maintainer responsiveness as a preferred rubric check to distinguish active repositories from those that engage with outside contributors. I documented these changes in scan-notes.md and graded additional issues individually, but I have not rerun the full scan to verify whether the revised ranking produces more diverse results.
 
@@ -63,15 +16,13 @@ I configured an issue-scout skill with a personalized fit profile, GitHub search
 
 I configured Voice Guard to check my GitHub communication against rules for issue claims, questions, and follow-up messages, and used it to review my claim before posting. When I tested a follow-up acknowledgment, the guard applied its initial-claim requirements to the reply and rejected the draft, revealing a limitation in how it distinguishes message types; I left that draft unposted rather than changing the rules without further testing. I also created a local CLAUDE.local.md for EcoTrace using its contribution guidelines and a scoped Claude Code investigation, which identified the relevant summary and exporter components without modifying the repository. I removed the template scaffolding and excluded the memory file through .git/info/exclude, keeping my personal notes out of the upstream pull request.
 
-**Unit 7: [one line on the tool work]**
+**Unit 7: Using Ship Gate and a custom test manifest to verify my contribution before submission**
 
-[2-4 sentences: the ship-gate and your gate manifest. What it produced
-on your real branch, what fought you, what changed because of it.]
+I configured Ship Gate with a manifest that runs EcoTrace’s Python test suite and uses my PR precheck rubric to evaluate plan fidelity, test evidence, diff quality, and communication standards. My initial gate run passed the tests but rejected the contribution because it incorrectly identified existing Prometheus exporter code as unrelated changes. I investigated the Git history and discovered that my local main branch was outdated; after fetching upstream changes, confirming there were no unique local commits, and aligning main with upstream/main, I reran the gate. Ship Gate then returned PASS, confirming that the six-file contribution satisfied all four rubric checks and that the Python test suite passed.
 
-**Unit 8: [one line on the tool work]**
+**Unit 8: Configuring PR Monitor and reviewing an AI-generated follow-up**
 
-[2-4 sentences: the PR-monitor and your playbook. What it read, what it
-drafted, what you did with the draft.]
+I configured PR Monitor with a personal playbook covering response rules, staleness thresholds, nudge etiquette, and walk-away criteria. I examined five merged EcoTrace pull requests to understand maintainer response times and selected five quiet days as my follow-up threshold. I ran PR Monitor against my merged PR #252, which detected 11 passing checks and generated a close-of-loop message thanking the maintainer, mentioning issue #183, and suggesting a possible follow-up for existing lint violations. After reviewing the draft, I decided not to post it because I had already thanked the maintainer and the additional suggestions were unnecessary.
 
 ---
 
@@ -105,7 +56,7 @@ Users should be able to generate a Markdown table or a self-contained HTML summa
 
 **Current Behavior**
 
-From my initial inspection of the repository, I found that get_summary() in ecotrace/core.py returns information such as tracking duration and total carbon emissions but does not include total_energy_kwh. However, the class already tracks energy consumption using self.total_energy_kwh. The requested Markdown and HTML exporters are not yet implemented. I have confirmed these observations through source inspection but have not yet reproduced the missing functionality in a local environment.
+From my initial inspection of the repository, I found that get_summary() in ecotrace/core.py returns information such as tracking duration and total carbon emissions but does not include total_energy_kwh. However, the class already tracks energy consumption using self.total_energy_kwh. The requested Markdown and HTML exporters are not yet implemented. I confirmed these observations through local source inspection and runtime checks, which showed that neither exporter was available and that get_summary() omitted the existing energy metric.
 
 **Affected Components**
 
@@ -117,7 +68,7 @@ From my initial inspection of the repository, I found that get_summary() in ecot
 
 * Tool: GitHub repository inspection and issue-scout. I used them to review the issue requirements, examine the existing implementation, and identify a design question for the maintainer.
 * What it produced: I identified the missing energy field in get_summary() and confirmed that the class already tracks total energy consumption. I also received maintainer guidance approving the summary change.
-* Difficulties: The issue describes the expected output but does not fully specify where the new exporters should be implemented. I have not yet validated the behavior locally.
+* Difficulties: The issue describes the expected output but does not fully specify where the new exporters should be implemented. I subsequently validated the missing functionality through local source inspection and runtime checks.
 * What changed: I asked the maintainer about adding total_energy_kwh to get_summary() and incorporated their response into my proposed approach. I will confirm the exporters’ placement when I inspect the local codebase.
 
 ---
@@ -166,119 +117,228 @@ Observed result: The requested Markdown and HTML summary exporters are not avail
 
 **Analysis**
 
-[Your analysis of the root cause: what is causing the issue, traced
-to the files and functions involved.]
+EcoTrace issue #183 is a feature request rather than a bug or regression. The application already tracks cumulative energy consumption through self.total_energy_kwh in ecotrace/core.py, but get_summary() does not include this value in its returned dictionary. As a result, downstream consumers cannot retrieve total energy consumption directly from the session summary.
+
+Additionally, the ecotrace/exporters/ package currently provides cloud, OpenTelemetry, and webhook exporters but does not include the requested Markdown and HTML summary generators. The maintainer confirmed that adding total_energy_kwh directly to get_summary() is the preferred backward-compatible approach.
 
 **Proposed Solution**
 
-[High-level description of your fix approach, and what you are
-deliberately NOT changing.]
+I will update get_summary() to include the existing total_energy_kwh value while preserving all current summary fields.
+
+I will implement lightweight to_markdown() and to_html() utilities that generate readable reports from session summary data. Both formats will display total energy consumption in kWh, tracking duration in seconds, and carbon emissions in gCO₂eq.
+
+The formatting utilities will handle missing and zero values without crashing. The HTML output will also escape any user-provided text included in the report.
+
+I will follow the repository’s existing conventions and confirm the appropriate function signatures and public import paths before implementation.
+
+I will not modify the existing energy calculations, carbon accumulation logic, unrelated exporters, or pre-existing repository-wide lint violations.
 
 **Implementation Plan**
 
-1. [Modify file X to do Y]
-2. [Add or change Z]
-3. [Update tests]
+1. Update ecotrace/core.py to add total_energy_kwh to the dictionary returned by get_summary() and document the new field.
+2. Implement to_markdown() and to_html() within ecotrace/exporters/, using the session summary data to generate Markdown and standalone HTML reports.
+3. Update the exporter package’s public interface as needed to expose the new utilities.
+4. Add unit tests in tests/test_exporters.py to verify Markdown and HTML formatting, required metrics, and handling of missing and zero values.
+5. Add tests confirming that get_summary() includes total_energy_kwh without removing existing fields.
+6. Run the existing pytest suite, verify the new functionality, and check modified code for lint issues. Document any pre-existing failures separately.
 
-[Record deviations here as they happen: what changed mid-build and
-why. A recorded deviation is honest work; silent drift is not.]
+Any changes to this plan during implementation will be recorded in the Implementation Notes section.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+* Tool: Claude Code, GitHub CLI, terminal commands, and manual source-code inspection.
+* What it produced: An investigation of the existing energy tracking, summary dictionary, exporter architecture, and test conventions, resulting in a proposed implementation plan.
+* Difficulties: The issue specifies the required output formats but does not define exact function signatures or import paths.
+* What changed: I incorporated the maintainer’s guidance to expose the existing energy value through get_summary() rather than introducing a new calculation. The exporter API will be confirmed before implementation.
 
 ---
 
 ## Testing Strategy
 
-[What observable checks prove the fix: your reproduction steps re-run
-against the built change (before and after), and the repo's own test
-suite or checks with the outcome shown. "Tests pass" with nothing
-observable named is not a strategy.]
+I used baseline reproduction checks, targeted unit tests, the full pytest suite, lint inspection, and Ship Gate to verify my implementation.
+
+**Baseline Verification**
+
+Before implementing the feature, I inspected the exporter package and searched for to_markdown() and to_html(). Neither function was available. I also confirmed that get_summary() did not expose total_energy_kwh, although EcoTrace already tracked that value internally.
+
+The baseline test suite completed with 251 passed and 2 skipped, establishing that the existing functionality worked before my changes.
+
+**Feature Verification**
+
+After implementation, I verified that:
+
+1. to_markdown() generates a readable Markdown summary containing energy consumption, tracking duration, and carbon emissions.
+2. to_html() generates a standalone HTML summary containing the same metrics.
+3. Both exporters handle missing and zero values without crashing.
+4. HTML output escapes user-provided text to prevent unintended HTML interpretation.
+5. get_summary() exposes total_energy_kwh while preserving existing fields and their order.
+6. The new utilities are accessible through the exporter package’s public interface.
+
+I added automated tests in tests/test_exporters.py and tests/test_core.py to verify these behaviors.
+
+**Regression Testing**
+
+I ran the full pytest suite at multiple stages of implementation.
+
+* Baseline: 251 passed, 2 skipped.
+* After initial implementation: 290 passed.
+* After integrating upstream changes: 1 failed, 304 passed. I investigated and corrected the failure.
+* Final verified run: 305 passed, 2 skipped.
+
+I also ran lint checks and compared the reported violations against the upstream baseline. The repository contained pre-existing flake8 violations, which I documented rather than modifying unrelated code.
+
+**Final Ship Gate Verification — November 7, 2026**
+
+I configured Ship Gate to run the repository’s Python test suite and evaluate my contribution against four PR precheck criteria: plan fidelity, test evidence, diff quality, and standards and communication.
+
+The first run passed pytest but failed the PR precheck because my local main branch was outdated. The comparison incorrectly included Prometheus exporter changes that were already present upstream.
+
+After updating the comparison baseline to upstream/main, I verified that my contribution affected only six intended files and reran Ship Gate.
+
+The final result was PASS, with all four precheck criteria accepted. Ship Gate also completed its Python test suite successfully in approximately 67 seconds.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+* Tool: pytest, flake8, Git, Claude Code’s PR precheck, and Ship Gate with a custom ship-manifest.md.
+* What it produced: Automated regression results, test evidence, a six-file diff verification, and a final Ship Gate PASS confirming that the contribution satisfied the configured checks.
+* Difficulties: The repository contained pre-existing lint violations, an upstream integration initially caused a test failure, and an outdated local main branch caused Ship Gate to incorrectly identify unrelated Prometheus changes.
+* What changed: I fixed the integration failure, documented existing lint limitations, investigated the Git comparison, aligned my local main with upstream/main, and reran Ship Gate successfully.
 
 ---
 
 ## Implementation Notes
 
-[A running log, added to as you work. Date each entry. What you
-built, decisions you made when you made them, wrong turns included.]
+**November 2026 — Implementation and Initial Testing**
 
-**[Date]**
+I implemented the Markdown and HTML summary exporters for EcoTrace issue #183 using Claude Code to assist with repository investigation and development.
 
-[Entry]
+I updated get_summary() in ecotrace/core.py to include the existing total_energy_kwh value without changing the energy calculations or removing existing summary fields.
 
-**[Date]**
+I added ecotrace/exporters/summary.py with to_markdown() and to_html() utilities. The Markdown exporter produces a readable table, while the HTML exporter produces a standalone summary card. Both support missing and zero values, and the HTML implementation escapes user-provided text.
 
-[Entry]
+I updated the exporter package’s public interface, added tests in tests/test_exporters.py and tests/test_core.py, and documented the new functionality in the README.
+
+The initial implementation passed 290 tests.
+
+**November 2026 — Upstream Integration and Regression Fix**
+
+While preparing the contribution, I integrated newer changes from the upstream repository.
+
+The integration initially produced one failing test, with 304 tests passing. I investigated the failure and corrected it rather than assuming that the new exporters were responsible.
+
+After the correction, the full test suite completed with 305 passed and 2 skipped.
+
+I also compared lint findings against the upstream baseline and documented existing repository-wide violations rather than expanding the scope of my contribution.
+
+**November 7, 2026 — Maintainer Review and Follow-up**
+
+After opening PR #252, I received encouraging feedback from the EcoTrace maintainer, who described the contribution as well crafted and thoroughly tested.
+
+The maintainer identified a duplicate WebhookExporter entry in ecotrace/exporters/__init__.py and requested that I remove it before merging.
+
+I removed the duplicate entry, verified the change, reran the test suite, and pushed commit f6ed9ff to my feature branch.
+
+I also replied to the maintainer on GitHub to acknowledge the feedback and explain what I had changed.
+
+The PR’s automated checks subsequently passed.
+
+**November 7, 2026 — Ship Gate Verification**
+
+I configured Ship Gate with a manifest that runs the repository’s Python test suite and uses my PR precheck rubric to evaluate the contribution.
+
+The first run passed the Python tests but rejected the PR because it incorrectly included unrelated Prometheus exporter changes in the comparison.
+
+I investigated the Git history and discovered that my local main branch was behind upstream/main.
+
+After fetching upstream changes, confirming that my local main contained no unique commits, and updating it to match upstream/main, I verified that the PR diff contained only six intended files.
+
+I reran Ship Gate, which returned PASS across all four precheck categories.
+
+**November 7, 2026 — Pull Request Approved and Merged**
+
+After addressing the maintainer’s feedback and pushing the correction in commit f6ed9ff, the maintainer reviewed the updated pull request and confirmed that the duplicate exporter entry had been removed and that all CI and security checks were passing.
+
+The maintainer approved PR #252 and merged it into EcoTrace’s main branch on November 7, 2026.
+
+This marked the completion of my first open-source contribution, from investigating issue #183 and implementing the requested functionality to writing tests, addressing review feedback, and having my changes accepted into the upstream repository.
+
+**November 9, 2026 — PR Monitor and Post-Merge Review**
+
+I configured PR Monitor with a personal playbook based on EcoTrace’s contribution guidelines and the response times of five previously merged pull requests. I ran the monitor against my merged PR #252, which detected 11 passing checks and generated a suggested close-of-loop message.
+
+After reviewing the draft, I decided not to post it because I had already thanked the maintainer and the contribution was complete. This demonstrated the importance of reviewing AI-generated recommendations before taking action.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+* Tool: Claude Code, Git, GitHub CLI, pytest, flake8, Ship Gate, and PR Monitor.
+* What it produced: Markdown and HTML exporters, updated summary data, automated tests, README documentation, a merged pull request, successful Ship Gate verification, and a PR Monitor follow-up draft.
+* Difficulties: Upstream integration introduced a test failure, the maintainer identified a duplicate exporter entry, an outdated Git branch caused Ship Gate to flag unrelated changes, and PR Monitor suggested a follow-up message that was unnecessary after the merge.
+* What changed: I fixed the integration failure, removed the duplicate exporter entry, synchronized my Git comparison baseline, and reran Ship Gate successfully. I also reviewed the PR Monitor draft and chose not to post it because I had already thanked the maintainer.
 
 ---
 
 ## Pull Request
 
-**PR Link:** [GitHub PR URL when opened]
+**PR Link:** https://github.com/Zwony/ecotrace/pull/252
 
-**PR Description:** [what the PR says; much of the content above
-adapts into it]
+**PR Description:** PR #252 resolves issue #183 (https://github.com/Zwony/ecotrace/issues/183) by adding Markdown and HTML summary exporters to EcoTrace. It implements to_markdown() and to_html() in ecotrace/exporters/summary.py and adds total_energy_kwh to the dictionary returned by get_summary(), the backward-compatible approach the maintainer confirmed before implementation. The PR also includes automated tests for both exporters and the updated summary, plus README documentation of the new functionality. The final regression run completed with 305 passed and 2 skipped.
 
 **Maintainer Feedback:**
 
-- [Date]: [feedback received, or "none yet"; silence is a normal
-  state and costs you nothing]
-- [Date]: [how you addressed it]
+- November 7, 2026: The maintainer described the contribution as well crafted and thoroughly tested, and requested that I remove a duplicate WebhookExporter entry in ecotrace/exporters/__init__.py before merging.
+- November 7, 2026: I removed the duplicate entry in commit f6ed9ff, pushed it to my feature branch, and replied to the maintainer on GitHub to explain the change. All CI and security checks passed.
+- November 7, 2026: The maintainer approved PR #252 and merged it into main.
 
-**Status:** [Awaiting review / Iterating / Merged / Closed. The
-status is a fact you record, never a grade: the PR is graded as
-opened.]
+**Status:** Merged
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: GitHub (the PR #252 review thread and its CI and security checks) and Git, which I used to commit and push the requested fix; Ship Gate with my PR precheck rubric for pre-merge verification.
+- What it produced: A reviewed pull request, the follow-up commit f6ed9ff removing the duplicate WebhookExporter entry, a reply to the maintainer, passing CI and security checks, and finally an approved and merged PR.
+- Difficulties: The maintainer found a duplicate WebhookExporter entry during review that I had missed before opening the PR.
+- What changed: I removed the duplicate entry, replied to the maintainer, and confirmed all checks passed before the merge. Next time I would review the diff of package export files such as __init__.py more carefully for duplicated entries before requesting review.
 
 ---
 
 ## Learnings and Reflections
 
+
 **Technical Skills Gained**
 
-[What you learned technically, named concretely.]
+This contribution strengthened my ability to navigate an unfamiliar Python codebase, understand its architecture, and implement new functionality while maintaining backward compatibility. I gained practical experience building Markdown and HTML exporters, handling missing and zero values, escaping HTML content, and extending an existing public API.
+
+I also improved my testing and debugging skills by writing targeted unit tests, running regression tests, and investigating failures after integrating upstream changes. Working with Git helped me better understand branch comparisons, upstream synchronization, and how an outdated local branch can affect automated code reviews.
+
+Beyond implementation, I gained experience with the complete open-source workflow, from identifying an issue and communicating with a maintainer to submitting a pull request, responding to feedback, and getting my changes merged.
 
 **Challenges Overcome**
 
-[What was hard and how you solved it; point at the real events, the
-Toolkit blocks above are full of them.]
+One of my first challenges was identifying a suitable issue. My initial issue-scout scan returned 199 unique issues, but the ranking concentrated the top results in one newly created repository. I refined the ranking criteria and investigated EcoTrace’s maintenance history before selecting issue #183.
 
-**What I'd Do Differently Next Time**
+During development, I encountered a test failure after integrating upstream changes. I investigated and corrected the failure, eventually achieving 305 passing tests and 2 skipped tests.
 
-[Reflection on your process.]
+Another challenge occurred when Ship Gate incorrectly identified unrelated Prometheus exporter changes because my local main branch was outdated. After investigating the Git history and updating the comparison baseline, I reran Ship Gate successfully.
+
+The maintainer also identified a duplicate WebhookExporter entry that I had overlooked. I removed the duplicate, verified the correction, and pushed an updated commit. The PR was subsequently approved and merged.
+
+**What I’d Do Differently Next Time**
+
+For my next contribution, I would inspect the repository’s development setup, contribution guidelines, and recent upstream changes earlier in the process. I would also ensure my local comparison branch is synchronized with upstream before running automated reviews.
+
+I would review changes to public export files more carefully before opening a pull request. Although my tests passed, the duplicate WebhookExporter entry demonstrated that automated tests cannot replace a careful manual review.
+
+I would continue using AI-assisted development tools while independently verifying their recommendations. My experience with issue-scout, Voice Guard, Ship Gate, and PR Monitor showed that these tools can be useful but may make incorrect assumptions or suggest actions that are unnecessary.
+
+Finally, I would continue documenting decisions, failures, and feedback throughout the contribution process. Keeping detailed records helped me understand my progress and explain how I approached problems rather than focusing only on the final implementation.
 
 ---
 
 ## Resources Used
 
-[What actually helped, not a reading list. List things this story
-already shows you using: the doc you followed to set the environment
-up, the thread that explained the bug, the person who answered you.
-One real entry beats ten plausible ones.]
-
-- [Link to documentation that helped]
-- [Discussion, issue, or post that helped]
+* EcoTrace Issue #183: https://github.com/Zwony/ecotrace/issues/183 — Provided the feature requirements and maintainer guidance on adding total_energy_kwh to get_summary().
+* EcoTrace Pull Request #252: https://github.com/Zwony/ecotrace/pull/252 — Documented my implementation, maintainer feedback, requested correction, automated checks, approval, and merge.
+* EcoTrace CONTRIBUTING.md: Helped me understand the repository’s contribution guidelines and communication expectations.
+* EcoTrace source code and test suite: I examined ecotrace/core.py, ecotrace/exporters/, and the existing tests to understand the architecture and implement the requested functionality.
+* Python, pytest, and flake8: Used for local development, regression testing, and lint inspection.
+* Git and GitHub CLI: Used to manage branches, inspect repository history, compare changes, and review pull request activity.
+* Claude Code and CodePath AI301 toolkit: Used issue-scout for issue discovery, repro-check for reproduction verification, Voice Guard for communication review, Ship Gate for pre-merge verification, and PR Monitor for post-merge review.
